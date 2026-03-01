@@ -32,7 +32,7 @@ function HeroSection() {
     const slide = heroSlides[current];
 
     return (
-        <section className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden">
+        <section className="relative min-h-[500px] h-[90vh] md:h-screen md:max-h-[900px] overflow-hidden">
             {/* Background image */}
             <AnimatePresence mode="wait">
                 <motion.div
@@ -51,7 +51,7 @@ function HeroSection() {
 
             {/* Content */}
             <div className="relative z-10 h-full flex items-center">
-                <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
+                <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-8 w-full">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={current}
@@ -61,22 +61,22 @@ function HeroSection() {
                             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                             className="max-w-xl"
                         >
-                            <p className="text-xs font-sans font-medium text-gold-400 uppercase tracking-widest mb-4" style={{ letterSpacing: '0.25em' }}>
+                            <p className="text-xs font-sans font-medium text-gold-400 uppercase tracking-widest mb-3" style={{ letterSpacing: '0.25em' }}>
                                 {slide.badge}
                             </p>
-                            <h1 className="font-serif font-semibold text-white leading-tight mb-6" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', lineHeight: '1.1' }}>
+                            <h1 className="font-serif font-semibold text-white leading-tight mb-4 md:mb-6" style={{ fontSize: 'clamp(2rem, 5vw, 5rem)', lineHeight: '1.1' }}>
                                 {slide.title}<br />
                                 <em className="font-serif-italic font-normal">{slide.subtitle}</em>
                             </h1>
-                            <p className="text-cream-300 text-base font-sans font-light leading-relaxed mb-8 max-w-sm">
+                            <p className="text-cream-300 text-sm md:text-base font-sans font-light leading-relaxed mb-6 max-w-sm hidden sm:block">
                                 {slide.description}
                             </p>
-                            <div className="flex items-center gap-4">
-                                <Link to={slide.ctaLink} className="btn-dark">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                                <Link to={slide.ctaLink} className="btn-dark w-full sm:w-auto justify-center">
                                     {slide.cta}
                                     <ArrowRight className="w-3.5 h-3.5" />
                                 </Link>
-                                <Link to="/products" className="btn-outline text-cream-100 border-cream-100 hover:text-charcoal-800">
+                                <Link to="/products" className="btn-outline-light w-full sm:w-auto justify-center text-center">
                                     View All
                                 </Link>
                             </div>
@@ -123,13 +123,14 @@ function TrustBar() {
 
     return (
         <div className="bg-cream-200 border-b border-brand-border">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-brand-border">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+                <div className="grid grid-cols-3 divide-x divide-brand-border">
                     {features.map(({ icon: Icon, title, text }) => (
-                        <div key={title} className="flex flex-col items-center text-center py-8 px-6 gap-2">
-                            <Icon className="w-5 h-5 text-gold-500 mb-1" strokeWidth={1.5} />
-                            <p className="text-xs font-sans font-semibold text-charcoal-600 tracking-wider uppercase" style={{ letterSpacing: '0.1em' }}>{title}</p>
-                            <p className="text-xs font-sans text-charcoal-400 font-light">{text}</p>
+                        <div key={title} className="flex flex-col items-center text-center py-5 md:py-8 px-3 md:px-6 gap-1.5">
+                            <Icon className="w-4 h-4 md:w-5 md:h-5 text-gold-500 mb-1" strokeWidth={1.5} />
+                            <p className="text-xs font-sans font-semibold text-charcoal-600 uppercase hidden md:block" style={{ letterSpacing: '0.1em' }}>{title}</p>
+                            <p className="text-xs font-sans font-semibold text-charcoal-600 uppercase md:hidden" style={{ letterSpacing: '0.08em', fontSize: '9px' }}>{title.split(' ')[0]}</p>
+                            <p className="text-xs font-sans text-charcoal-400 font-light hidden sm:block">{text}</p>
                         </div>
                     ))}
                 </div>
@@ -266,22 +267,22 @@ function PromoSection() {
     ];
 
     return (
-        <section className="py-20 bg-cream-100">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                <div className="grid md:grid-cols-3 gap-4">
+        <section className="py-12 md:py-20 bg-cream-100">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
                     {promos.map((p, i) => (
                         <Reveal key={i} delay={i * 0.1}>
                             <Link to={p.link}>
                                 <motion.div
                                     whileHover={{ y: -4 }}
-                                    className={`${p.bg} p-10 flex flex-col gap-3`}
+                                    className={`${p.bg} p-7 md:p-10 flex flex-col gap-2 md:gap-3`}
                                 >
-                                    <p className="text-xs font-sans font-medium uppercase tracking-widest text-cream-400" style={{ letterSpacing: '0.2em' }}>{p.sub}</p>
-                                    <h3 className="font-serif text-3xl font-medium text-cream-100">{p.title}</h3>
-                                    <p className="text-sm text-cream-400 font-light">{p.text}</p>
-                                    <div className="flex items-center gap-2 mt-3 border-t border-white/10 pt-4">
+                                    <p className="text-xs font-sans font-medium uppercase tracking-widest text-cream-400" style={{ letterSpacing: '0.15em' }}>{p.sub}</p>
+                                    <h3 className="font-serif text-2xl md:text-3xl font-medium text-cream-100">{p.title}</h3>
+                                    <p className="text-xs md:text-sm text-cream-400 font-light">{p.text}</p>
+                                    <div className="flex items-center gap-2 mt-2 border-t border-white/10 pt-3">
                                         <span className="text-xs font-sans font-medium text-cream-300 tracking-wider uppercase" style={{ letterSpacing: '0.12em' }}>{p.label}</span>
-                                        <ArrowRight className="w-3.5 h-3.5 text-cream-300" />
+                                        <ArrowRight className="w-3 h-3 text-cream-300" />
                                     </div>
                                 </motion.div>
                             </Link>
@@ -339,7 +340,7 @@ function ReviewsSection() {
                     <h2 className="section-heading">Our Patrons Speak</h2>
                     <span className="hr-gold" />
                 </Reveal>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     {reviews.map((r, i) => (
                         <Reveal key={r.id} delay={i * 0.08}>
                             <div className="bg-cream-100 p-8 border-t-2 border-gold-400">

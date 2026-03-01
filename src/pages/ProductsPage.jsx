@@ -52,39 +52,38 @@ export default function ProductsPage() {
     return (
         <div className="min-h-screen pt-24 pb-16">
             {/* Page Header */}
-            <div className="relative py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div className="absolute inset-0 dot-grid opacity-30 pointer-events-none" />
+            <div className="relative py-8 md:py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="relative"
                 >
-                    <h1 className="font-display font-black text-4xl md:text-5xl mb-2">
+                    <h1 className="font-serif text-3xl md:text-5xl font-medium text-charcoal-800 mb-1">
                         {searchQuery ? (
-                            <>Results for "<span className="gradient-text">{searchQuery}</span>"</>
+                            <>Results for "<span style={{ color: '#C5A880' }}>{searchQuery}</span>"</>
                         ) : activeCategory !== 'All' ? (
-                            <><span className="gradient-text">{activeCategory}</span> Products</>
+                            <><span style={{ color: '#C5A880' }}>{activeCategory}</span> Products</>
                         ) : (
-                            <>All <span className="gradient-text">Products</span></>
+                            <>All <span style={{ color: '#C5A880' }}>Products</span></>
                         )}
                     </h1>
-                    <p className="text-slate-400">{filtered.length} products found</p>
+                    <p className="text-sm font-sans text-charcoal-400 font-light">{filtered.length} products found</p>
                 </motion.div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Category Tabs */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 scrollbar-hide">
+                <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-5 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
                     {['All', ...categories.map(c => c.name)].map((cat) => (
                         <motion.button
                             key={cat}
-                            whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
                             onClick={() => setActiveCategory(cat)}
-                            className={`flex-shrink-0 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200 ${activeCategory === cat
-                                    ? 'bg-primary-500 text-white shadow-lg shadow-primary-500/30'
-                                    : 'glass border border-white/20 hover:border-primary-500/50'
+                            className={`flex-shrink-0 px-4 py-2 text-xs font-sans font-semibold uppercase tracking-wider transition-all duration-200 border ${activeCategory === cat
+                                    ? 'bg-charcoal-800 text-cream-100 border-charcoal-800'
+                                    : 'bg-transparent text-charcoal-600 border-charcoal-300 hover:border-charcoal-600 hover:text-charcoal-800'
                                 }`}
+                            style={{ letterSpacing: '0.1em' }}
                         >
                             {cat}
                         </motion.button>
@@ -92,19 +91,20 @@ export default function ProductsPage() {
                 </div>
 
                 {/* Filter & Sort Bar */}
-                <div className="flex items-center gap-3 mb-6 flex-wrap">
+                <div className="flex items-center gap-2 mb-5 flex-wrap">
                     <button
                         onClick={() => setFilterOpen(!filterOpen)}
-                        className="flex items-center gap-2 glass border border-white/20 px-4 py-2.5 rounded-xl text-sm font-medium hover:border-primary-500/50 transition-all"
+                        className="flex items-center gap-2 border border-charcoal-300 px-3 py-2 text-xs font-sans font-medium text-charcoal-600 hover:border-charcoal-600 transition-all uppercase tracking-wider"
+                        style={{ letterSpacing: '0.1em' }}
                     >
-                        <SlidersHorizontal className="w-4 h-4" />
+                        <SlidersHorizontal className="w-3.5 h-3.5" />
                         Filters
                     </button>
 
                     <select
                         value={sort}
                         onChange={(e) => setSort(e.target.value)}
-                        className="glass border border-white/20 px-4 py-2.5 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500 cursor-pointer"
+                        className="border border-charcoal-300 px-3 py-2 text-xs font-sans font-medium text-charcoal-600 focus:outline-none focus:border-charcoal-700 cursor-pointer bg-transparent"
                     >
                         {sortOptions.map(opt => (
                             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -112,25 +112,25 @@ export default function ProductsPage() {
                     </select>
 
                     {searchQuery && (
-                        <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-primary-100 dark:bg-primary-950/50 text-primary-600 dark:text-primary-400 text-sm">
+                        <div className="flex items-center gap-1.5 px-3 py-2 border border-gold-400 text-gold-600 text-xs font-sans">
                             <Search className="w-3 h-3" />
                             {searchQuery}
                             <button onClick={() => setSearchParams({})}><X className="w-3 h-3" /></button>
                         </div>
                     )}
 
-                    <div className="ml-auto flex items-center gap-2">
+                    <div className="ml-auto flex items-center gap-1.5">
                         <button
                             onClick={() => setViewMode('grid')}
-                            className={`p-2 rounded-lg transition-colors ${viewMode === 'grid' ? 'text-primary-500 bg-primary-50 dark:bg-primary-950/30' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`p-2 transition-colors ${viewMode === 'grid' ? 'text-charcoal-800' : 'text-charcoal-400 hover:text-charcoal-600'}`}
                         >
-                            <Grid className="w-5 h-5" />
+                            <Grid className="w-4 h-4" />
                         </button>
                         <button
                             onClick={() => setViewMode('list')}
-                            className={`p-2 rounded-lg transition-colors ${viewMode === 'list' ? 'text-primary-500 bg-primary-50 dark:bg-primary-950/30' : 'text-slate-400 hover:text-slate-600'}`}
+                            className={`p-2 transition-colors ${viewMode === 'list' ? 'text-charcoal-800' : 'text-charcoal-400 hover:text-charcoal-600'}`}
                         >
-                            <List className="w-5 h-5" />
+                            <List className="w-4 h-4" />
                         </button>
                     </div>
                 </div>

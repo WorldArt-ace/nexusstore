@@ -118,9 +118,9 @@ export default function LoginPage() {
                         <div className="flex-1 h-px bg-brand-border" />
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-1 gap-2">
                         {['Google', 'Apple', 'Facebook'].map(p => (
-                            <button key={p} className="py-2.5 border border-brand-border text-xs font-sans font-medium text-charcoal-600 hover:border-charcoal-400 hover:text-charcoal-800 transition-all">
+                            <button key={p} className="w-full py-3 border border-brand-border text-xs font-sans font-medium text-charcoal-600 hover:border-charcoal-400 hover:text-charcoal-800 transition-all tracking-wider uppercase" style={{ letterSpacing: '0.1em' }}>
                                 {p}
                             </button>
                         ))}
@@ -133,7 +133,7 @@ export default function LoginPage() {
                         </Link>
                     </p>
                 </motion.div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

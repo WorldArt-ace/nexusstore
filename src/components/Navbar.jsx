@@ -35,11 +35,22 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', fn);
     }, []);
 
+    // Close everything on route change
     useEffect(() => {
         setMobileOpen(false);
         setMegaOpen(false);
         setSearchOpen(false);
     }, [location]);
+
+    // Prevent body scroll when mobile menu is open
+    useEffect(() => {
+        if (mobileOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        return () => { document.body.style.overflow = ''; };
+    }, [mobileOpen]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -52,24 +63,29 @@ export default function Navbar() {
 
     return (
         <>
-            {/* Top bar - thin announcement */}
-            <div className="bg-charcoal-800 text-cream-200 text-center py-2 px-4 text-xs font-sans tracking-widest uppercase" style={{ letterSpacing: '0.12em' }}>
-                Complimentary Shipping on Orders Over $150 &nbsp;·&nbsp; Use Code <span className="text-gold-400 font-medium">SAVE10</span>
+            {/* Announcement bar */}
+            <div
+                className="bg-charcoal-800 text-cream-200 text-center py-2 px-4 text-xs font-sans"
+                style={{ letterSpacing: '0.12em', textTransform: 'uppercase' }}
+            >
+                Free Shipping on Orders Over $150 &nbsp;·&nbsp; Code{' '}
+                <span className="text-gold-400 font-semibold">SAVE10</span>
             </div>
 
+            {/* Main Header */}
             <motion.header
                 initial={{ y: -60, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className={`sticky top-0 z-50 transition-all duration-500 ${scrolled
-                    ? 'bg-cream-100/95 shadow-sm backdrop-blur-md border-b border-brand-border'
-                    : 'bg-cream-100 border-b border-brand-border'
+                        ? 'bg-cream-100/95 shadow-sm backdrop-blur-md border-b border-brand-border'
+                        : 'bg-cream-100 border-b border-brand-border'
                     }`}
             >
-                <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                    <div className="flex items-center h-16 md:h-20">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center h-14 md:h-20">
 
-                        {/* Left nav - desktop (1/3) */}
+                        {/* LEFT: Desktop nav links */}
                         <nav className="hidden lg:flex items-center gap-8 flex-1">
                             {navLinks.slice(0, 2).map((link) => (
                                 <div key={link.label} className="relative">
@@ -89,22 +105,34 @@ export default function Navbar() {
                             ))}
                         </nav>
 
-                        {/* Brand Name - CENTER (always, non-overlapping) */}
+                        {/* MOBILE: Hamburger (left side) */}
+                        <button
+                            onClick={() => setMobileOpen(true)}
+                            className="lg:hidden p-2 -ml-1 text-charcoal-600 hover:text-charcoal-900 transition-colors"
+                            aria-label="Open menu"
+                        >
+                            <Menu className="w-5 h-5" />
+                        </button>
+
+                        {/* CENTER: Brand */}
                         <div className="flex-1 flex justify-center lg:flex-none">
-                            <Link to="/" className="font-serif text-xl md:text-2xl font-semibold tracking-wide text-charcoal-800 hover:text-charcoal-600 transition-colors whitespace-nowrap">
+                            <Link
+                                to="/"
+                                className="font-serif text-xl md:text-2xl font-semibold tracking-wide text-charcoal-800 hover:text-charcoal-600 transition-colors whitespace-nowrap"
+                            >
                                 NEXUS.
                             </Link>
                         </div>
 
-                        {/* Right nav - desktop (1/3) */}
-                        <nav className="hidden lg:flex items-center gap-8 flex-1 justify-end">
-                            {navLinks.slice(2, 5).map((link) => (
-                                <Link key={link.label} to={link.to} className="nav-item">{link.label}</Link>
-                            ))}
-                        </nav>
+                        {/* RIGHT: Desktop nav + icons */}
+                        <div className="flex items-center gap-1 sm:gap-2 flex-1 justify-end">
+                            {/* Desktop right-nav */}
+                            <nav className="hidden lg:flex items-center gap-8 mr-6">
+                                {navLinks.slice(2, 5).map((link) => (
+                                    <Link key={link.label} to={link.to} className="nav-item">{link.label}</Link>
+                                ))}
+                            </nav>
 
-                        {/* Icons */}
-                        <div className="flex items-center gap-3 ml-4 lg:ml-6">
                             {/* Search */}
                             <button
                                 onClick={() => setSearchOpen(true)}
@@ -114,20 +142,17 @@ export default function Navbar() {
                                 <Search className="w-4 h-4" />
                             </button>
 
-                            {/* Theme */}
-                            <button
-                                onClick={toggle}
-                                className="p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors text-xs font-medium tracking-widest uppercase hidden sm:block"
-                                style={{ letterSpacing: '0.1em', fontSize: '10px' }}
+                            {/* Wishlist — hidden on smallest mobile */}
+                            <Link
+                                to="/account/wishlist"
+                                className="relative p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors hidden sm:flex"
                             >
-                                {isDark ? 'Light' : 'Dark'}
-                            </button>
-
-                            {/* Wishlist */}
-                            <Link to="/account/wishlist" className="p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors relative hidden sm:block">
                                 <Heart className="w-4 h-4" />
                                 {wishlist.length > 0 && (
-                                    <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-gold-400 text-charcoal-900 text-xs rounded-full flex items-center justify-center font-semibold" style={{ fontSize: '8px' }}>
+                                    <span
+                                        className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-gold-400 text-charcoal-900 rounded-full flex items-center justify-center font-bold"
+                                        style={{ fontSize: '8px' }}
+                                    >
                                         {wishlist.length}
                                     </span>
                                 )}
@@ -136,34 +161,41 @@ export default function Navbar() {
                             {/* Cart */}
                             <button
                                 onClick={() => openCart(true)}
-                                className="p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors relative"
+                                className="relative p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors"
                                 aria-label="Cart"
                             >
                                 <ShoppingBag className="w-4 h-4" />
                                 {itemCount > 0 && (
-                                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-charcoal-800 text-cream-100 text-xs rounded-full flex items-center justify-center font-medium" style={{ fontSize: '9px' }}>
+                                    <span
+                                        className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-charcoal-800 text-cream-100 rounded-full flex items-center justify-center font-medium"
+                                        style={{ fontSize: '9px' }}
+                                    >
                                         {itemCount}
                                     </span>
                                 )}
                             </button>
 
-                            {/* Account */}
-                            <Link to={user ? '/account' : '/login'} className="p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors hidden sm:block">
+                            {/* Account — hidden on mobile */}
+                            <Link
+                                to={user ? '/account' : '/login'}
+                                className="p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors hidden sm:flex"
+                            >
                                 <User className="w-4 h-4" />
                             </Link>
 
-                            {/* Mobile hamburger */}
+                            {/* Dark/Light — desktop only */}
                             <button
-                                onClick={() => setMobileOpen(!mobileOpen)}
-                                className="lg:hidden p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors"
+                                onClick={toggle}
+                                className="p-2 text-charcoal-600 hover:text-charcoal-900 transition-colors hidden md:block text-xs font-medium tracking-wider uppercase"
+                                style={{ letterSpacing: '0.1em', fontSize: '10px' }}
                             >
-                                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                                {isDark ? 'Light' : 'Dark'}
                             </button>
                         </div>
                     </div>
                 </div>
 
-                {/* Mega Menu */}
+                {/* Mega Menu (desktop only) */}
                 <AnimatePresence>
                     {megaOpen && (
                         <motion.div
@@ -173,24 +205,16 @@ export default function Navbar() {
                             transition={{ duration: 0.2 }}
                             onMouseEnter={() => setMegaOpen(true)}
                             onMouseLeave={() => setMegaOpen(false)}
-                            className="absolute top-full left-0 right-0 bg-cream-100 border-t border-b border-brand-border shadow-lg"
+                            className="absolute top-full left-0 right-0 bg-cream-100 border-t border-b border-brand-border shadow-lg z-50"
                         >
                             <div className="max-w-7xl mx-auto px-8 py-10">
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                                <div className="grid grid-cols-3 md:grid-cols-6 gap-6">
                                     {categories.map((cat) => (
-                                        <Link
-                                            key={cat.id}
-                                            to={`/products/${cat.name}`}
-                                            className="group text-center"
-                                        >
-                                            <div className="aspect-square rounded-none overflow-hidden img-zoom-wrap mb-3 bg-cream-300">
-                                                <img
-                                                    src={cat.image}
-                                                    alt={cat.name}
-                                                    className="w-full h-full object-cover"
-                                                />
+                                        <Link key={cat.id} to={`/products/${cat.name}`} className="group text-center">
+                                            <div className="aspect-square overflow-hidden img-zoom-wrap mb-3 bg-cream-300">
+                                                <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
                                             </div>
-                                            <p className="nav-item text-center text-charcoal-600 group-hover:text-gold-500">{cat.name}</p>
+                                            <p className="nav-item text-center group-hover:text-gold-500">{cat.name}</p>
                                         </Link>
                                     ))}
                                 </div>
@@ -200,72 +224,107 @@ export default function Navbar() {
                 </AnimatePresence>
             </motion.header>
 
-            {/* Mobile Menu */}
+            {/* ── Mobile Drawer ── */}
             <AnimatePresence>
                 {mobileOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, x: '100%' }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: '100%' }}
-                        transition={{ type: 'spring', damping: 30, stiffness: 250 }}
-                        className="fixed inset-0 z-40 lg:hidden"
-                    >
-                        <div className="absolute inset-0 bg-charcoal-900/40" onClick={() => setMobileOpen(false)} />
-                        <div className="absolute right-0 top-0 bottom-0 w-72 bg-cream-100 flex flex-col p-8 overflow-y-auto">
-                            <button onClick={() => setMobileOpen(false)} className="self-end mb-8 text-charcoal-500">
-                                <X className="w-5 h-5" />
-                            </button>
-                            <div className="font-serif text-2xl font-semibold text-charcoal-800 mb-8">NEXUS.</div>
-                            <nav className="space-y-1">
+                    <>
+                        {/* Backdrop */}
+                        <motion.div
+                            key="backdrop"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setMobileOpen(false)}
+                            className="fixed inset-0 z-[60] bg-charcoal-900/50"
+                        />
+
+                        {/* Drawer panel */}
+                        <motion.div
+                            key="drawer"
+                            initial={{ x: '-100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '-100%' }}
+                            transition={{ type: 'spring', damping: 28, stiffness: 240 }}
+                            className="fixed left-0 top-0 bottom-0 z-[70] w-72 bg-cream-100 flex flex-col overflow-y-auto shadow-2xl"
+                        >
+                            {/* Drawer header */}
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-brand-border">
+                                <Link to="/" onClick={() => setMobileOpen(false)} className="font-serif text-xl font-semibold text-charcoal-800">
+                                    NEXUS.
+                                </Link>
+                                <button
+                                    onClick={() => setMobileOpen(false)}
+                                    className="p-2 text-charcoal-500 hover:text-charcoal-800 transition-colors"
+                                    aria-label="Close menu"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Nav links */}
+                            <nav className="flex-1 px-6 py-4">
                                 {navLinks.map((link) => (
                                     <Link
                                         key={link.label}
                                         to={link.to}
-                                        className="block py-3 border-b border-brand-border text-xs font-sans font-medium tracking-widest uppercase text-charcoal-700 hover:text-gold-500 transition-colors"
-                                        style={{ letterSpacing: '0.12em' }}
+                                        onClick={() => setMobileOpen(false)}
+                                        className="flex items-center py-3.5 border-b border-brand-border text-xs font-sans font-semibold tracking-widest uppercase text-charcoal-700 hover:text-gold-500 transition-colors"
+                                        style={{ letterSpacing: '0.14em' }}
                                     >
                                         {link.label}
                                     </Link>
                                 ))}
                             </nav>
-                            <div className="mt-8 space-y-4">
-                                <Link to={user ? '/account' : '/login'} className="block text-xs nav-item">
-                                    {user ? `Hello, ${user.name}` : 'Sign In'}
+
+                            {/* Bottom actions */}
+                            <div className="px-6 py-6 border-t border-brand-border space-y-4">
+                                <Link
+                                    to={user ? '/account' : '/login'}
+                                    onClick={() => setMobileOpen(false)}
+                                    className="flex items-center gap-3 text-xs font-sans font-semibold uppercase tracking-wider text-charcoal-700 hover:text-gold-500 transition-colors"
+                                    style={{ letterSpacing: '0.12em' }}
+                                >
+                                    <User className="w-4 h-4" />
+                                    {user ? `My Account` : 'Sign In'}
                                 </Link>
-                                <button onClick={toggle} className="block text-xs nav-item">
-                                    {isDark ? 'Light Mode' : 'Dark Mode'}
+                                <button
+                                    onClick={toggle}
+                                    className="flex items-center gap-3 text-xs font-sans font-semibold uppercase tracking-wider text-charcoal-700 hover:text-gold-500 transition-colors"
+                                    style={{ letterSpacing: '0.12em' }}
+                                >
+                                    {isDark ? '☀ Light Mode' : '◗ Dark Mode'}
                                 </button>
                             </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
 
-            {/* Search Overlay */}
+            {/* ── Search Overlay ── */}
             <AnimatePresence>
                 {searchOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 flex items-start justify-center pt-32 px-6"
+                        className="fixed inset-0 z-[80] flex items-start justify-center pt-20 px-4"
                     >
                         <div className="absolute inset-0 bg-charcoal-900/60" onClick={() => setSearchOpen(false)} />
                         <motion.div
                             initial={{ y: -20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             exit={{ y: -20, opacity: 0 }}
-                            className="relative w-full max-w-2xl bg-cream-100 p-8 shadow-2xl"
+                            className="relative w-full max-w-2xl bg-cream-100 p-6 md:p-8 shadow-2xl"
                         >
-                            <p className="section-label mb-4 text-center">Search</p>
-                            <form onSubmit={handleSearch} className="flex items-end gap-4 border-b-2 border-charcoal-800 pb-2">
+                            <p className="section-label text-center mb-4">Search</p>
+                            <form onSubmit={handleSearch} className="flex items-end gap-3 border-b-2 border-charcoal-800 pb-2">
                                 <input
                                     autoFocus
                                     type="text"
                                     value={searchVal}
                                     onChange={(e) => setSearchVal(e.target.value)}
                                     placeholder="Search products, collections…"
-                                    className="flex-1 bg-transparent text-xl font-serif font-medium placeholder-charcoal-300 text-charcoal-800 outline-none"
+                                    className="flex-1 bg-transparent text-lg md:text-xl font-serif font-medium placeholder-charcoal-300 text-charcoal-800 outline-none"
                                 />
                                 <button type="submit" className="text-charcoal-600 hover:text-charcoal-900 pb-0.5">
                                     <Search className="w-5 h-5" />
