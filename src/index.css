@@ -1,0 +1,465 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────
+   ROOT DESIGN TOKENS
+───────────────────────────────────── */
+:root {
+  --bg: #F8F7F4;
+  --bg-alt: #F0EDE8;
+  --bg-section: #EAE6DF;
+  --text: #2C2C2C;
+  --text-muted: #888888;
+  --text-light: #AAAAAA;
+  --accent: #C5A880;
+  --accent-dark: #A07D50;
+  --border: #E4DFD5;
+  --dark: #1A1A1A;
+  --dark-2: #111111;
+}
+
+/* ─────────────────────────────────────
+   BASE
+───────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Montserrat', 'DM Sans', system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--dark);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* Selection */
+::selection {
+  background: rgba(197, 168, 128, 0.25);
+  color: var(--dark);
+}
+
+/* ─────────────────────────────────────
+   COMPONENT STYLES (raw CSS, no @apply with custom colours)
+───────────────────────────────────── */
+
+/* Buttons */
+.btn-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #1A1A1A;
+  color: #FAF8F5;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 14px 30px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #1A1A1A;
+}
+
+.btn-dark:hover {
+  background-color: #111111;
+  color: #FFFFFF;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: transparent;
+  border: 1px solid #1A1A1A;
+  color: #1A1A1A;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 14px 30px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background-color: #1A1A1A;
+  color: #FAF8F5;
+}
+
+.btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #FAF8F5;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 14px 30px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Nav link */
+.nav-item {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #444444;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #C5A880;
+  transition: width 0.3s ease;
+}
+
+.nav-item:hover {
+  color: #1A1A1A;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+}
+
+/* Section label (gold uppercase tag) */
+.section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #C5A880;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Section heading */
+.section-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  font-weight: 500;
+  color: #2C2C2C;
+  line-height: 1.2;
+}
+
+/* Gold divider */
+.hr-gold {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: #C5A880;
+  margin: 18px auto;
+}
+
+/* Product card */
+.product-card {
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.product-card .card-image {
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 3/4;
+  background-color: #EAE6DF;
+}
+
+.product-card .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover .card-image img {
+  transform: scale(1.06);
+}
+
+.product-card .card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 26, 0);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 20px;
+  transition: background 0.5s ease;
+}
+
+.product-card:hover .card-overlay {
+  background: rgba(26, 26, 26, 0.18);
+}
+
+/* Card text */
+.card-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  color: #C5A880;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-top: 14px;
+  margin-bottom: 4px;
+}
+
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2C2C2C;
+}
+
+.card-price {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #C5A880;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Underline input (Lumière style) */
+.input-lumiere {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #D0C9BE;
+  padding-bottom: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: #2C2C2C;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-lumiere::placeholder {
+  color: #B0A898;
+}
+
+.input-lumiere:focus {
+  border-bottom-color: #C5A880;
+}
+
+/* Normal input field */
+.input-field {
+  width: 100%;
+  background: #F0EDE8;
+  border: 1px solid #E4DFD5;
+  padding: 10px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  color: #2C2C2C;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.input-field:focus {
+  border-color: #C5A880;
+}
+
+/* Cart drawer */
+.cart-drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 50;
+  background: #FAFAF8;
+  border-left: 1px solid #E4DFD5;
+  display: flex;
+  flex-direction: column;
+  width: min(420px, 100vw);
+}
+
+/* Badge */
+.luxury-badge {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Image zoom */
+.img-zoom-wrap {
+  overflow: hidden;
+}
+
+.img-zoom-wrap img {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-zoom-wrap:hover img {
+  transform: scale(1.07);
+}
+
+/* Marquee */
+.marquee-track {
+  display: flex;
+  gap: 4rem;
+  animation: marquee 25s linear infinite;
+  white-space: nowrap;
+}
+
+/* Italic serif utility */
+.font-serif-italic {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────
+   KEYFRAMES
+───────────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ─────────────────────────────────────
+   DARK MODE (minimal override)
+───────────────────────────────────── */
+.dark body {
+  background-color: #171612;
+  color: #EDE9E1;
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5 {
+  color: #EDE9E1;
+}
+
+.dark .btn-dark {
+  background-color: #EDE9E1;
+  color: #1A1A1A;
+  border-color: #EDE9E1;
+}
+
+.dark .btn-dark:hover {
+  background-color: #C5A880;
+  border-color: #C5A880;
+}
+
+.dark .btn-outline {
+  border-color: #EDE9E1;
+  color: #EDE9E1;
+}
+
+.dark .btn-outline:hover {
+  background-color: #EDE9E1;
+  color: #1A1A1A;
+}
+
+.dark .nav-item {
+  color: #BBBBBB;
+}
+
+.dark .nav-item:hover {
+  color: #EDE9E1;
+}
+
+.dark .section-heading {
+  color: #EDE9E1;
+}
+
+.dark .card-title {
+  color: #EDE9E1;
+}
