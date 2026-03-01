@@ -32,7 +32,7 @@ function HeroSection() {
     const slide = heroSlides[current];
 
     return (
-        <section className="relative min-h-[500px] h-[90vh] md:h-screen md:max-h-[900px] overflow-hidden">
+        <section className="relative min-h-[580px] h-[88vh] md:h-screen md:max-h-[900px] overflow-hidden">
             {/* Background image */}
             <AnimatePresence mode="wait">
                 <motion.div
@@ -44,14 +44,14 @@ function HeroSection() {
                     className="absolute inset-0"
                 >
                     <img src={slide.image} alt={slide.title} className="w-full h-full object-cover" />
-                    {/* Dark overlay — editorial gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-charcoal-900/70 via-charcoal-900/30 to-transparent" />
+                    {/* Stronger bottom gradient on mobile for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal-900/80 via-charcoal-900/40 to-charcoal-900/10 md:bg-gradient-to-r md:from-charcoal-900/75 md:via-charcoal-900/30 md:to-transparent" />
                 </motion.div>
             </AnimatePresence>
 
-            {/* Content */}
-            <div className="relative z-10 h-full flex items-center">
-                <div className="max-w-7xl mx-auto px-5 md:px-6 lg:px-8 w-full">
+            {/* Content — anchored to bottom on mobile, centered vertically on desktop */}
+            <div className="relative z-10 h-full flex items-end md:items-center pb-20 md:pb-0">
+                <div className="max-w-7xl mx-auto px-5 md:px-8 w-full">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={current}
@@ -59,24 +59,34 @@ function HeroSection() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -20 }}
                             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                            className="max-w-xl"
+                            className="max-w-lg"
                         >
-                            <p className="text-xs font-sans font-medium text-gold-400 uppercase tracking-widest mb-3" style={{ letterSpacing: '0.25em' }}>
+                            <p className="text-xs font-sans font-medium text-gold-400 uppercase mb-3" style={{ letterSpacing: '0.25em' }}>
                                 {slide.badge}
                             </p>
-                            <h1 className="font-serif font-semibold text-white leading-tight mb-4 md:mb-6" style={{ fontSize: 'clamp(2rem, 5vw, 5rem)', lineHeight: '1.1' }}>
+                            <h1
+                                className="font-serif font-semibold text-white leading-tight mb-4"
+                                style={{ fontSize: 'clamp(1.85rem, 7vw, 5rem)', lineHeight: '1.1' }}
+                            >
                                 {slide.title}<br />
                                 <em className="font-serif-italic font-normal">{slide.subtitle}</em>
                             </h1>
-                            <p className="text-cream-300 text-sm md:text-base font-sans font-light leading-relaxed mb-6 max-w-sm hidden sm:block">
+                            <p className="text-cream-300 text-sm font-sans font-light leading-relaxed mb-5 max-w-sm hidden sm:block">
                                 {slide.description}
                             </p>
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-                                <Link to={slide.ctaLink} className="btn-dark w-full sm:w-auto justify-center">
+                            {/* Buttons: side-by-side and compact on mobile */}
+                            <div className="flex items-center gap-3">
+                                <Link
+                                    to={slide.ctaLink}
+                                    className="btn-dark flex-1 sm:flex-none justify-center"
+                                >
                                     {slide.cta}
                                     <ArrowRight className="w-3.5 h-3.5" />
                                 </Link>
-                                <Link to="/products" className="btn-outline-light w-full sm:w-auto justify-center text-center">
+                                <Link
+                                    to="/products"
+                                    className="btn-outline-light flex-1 sm:flex-none justify-center text-center"
+                                >
                                     View All
                                 </Link>
                             </div>
@@ -85,27 +95,27 @@ function HeroSection() {
                 </div>
             </div>
 
-            {/* Slide dots */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+            {/* Slide dots — always visible at bottom centre */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
                 {heroSlides.map((_, i) => (
                     <button
                         key={i}
                         onClick={() => setCurrent(i)}
-                        className={`rounded-full transition-all duration-400 ${i === current ? 'w-8 h-1.5 bg-gold-400' : 'w-2 h-1.5 bg-white/50'}`}
+                        className={`rounded-full transition-all duration-400 ${i === current ? 'w-8 h-1.5 bg-gold-400' : 'w-2 h-1.5 bg-white/40'}`}
                     />
                 ))}
             </div>
 
-            {/* Slide nav arrows */}
+            {/* Slide nav arrows — desktop only (hidden on mobile to avoid overlap) */}
             <button
                 onClick={() => setCurrent(c => (c - 1 + heroSlides.length) % heroSlides.length)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 border border-white/30 text-white hover:bg-white/10 flex items-center justify-center transition-colors"
+                className="hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 border border-white/30 text-white hover:bg-white/10 items-center justify-center transition-colors"
             >
                 <ChevronLeft className="w-4 h-4" />
             </button>
             <button
                 onClick={() => setCurrent(c => (c + 1) % heroSlides.length)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 border border-white/30 text-white hover:bg-white/10 flex items-center justify-center transition-colors"
+                className="hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 z-20 w-10 h-10 border border-white/30 text-white hover:bg-white/10 items-center justify-center transition-colors"
             >
                 <ChevronRight className="w-4 h-4" />
             </button>
